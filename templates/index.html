@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TodoMVC</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+</head>
+
+<body>
+<section class="todoapp" id="todoapp">
+    <header class="header">
+        <h1>Todos</h1>
+        <!--绑定键盘事件添加数据-->
+        <input @keyup.enter="addItem" class="new-todo" placeholder="What needs to be done?" v-app-focus>
+    </header>
+    <!-- 这个部分在默认情况下应该隐藏，当有待办事项时应该显示 -->
+    <section class="main" v-show="items.length">
+        <input id="toggle-all" v-model="isSelectAll" class="toggle-all" type="checkbox">
+        <label for="toggle-all">Mark all as complete</label>
+        <ul class="todo-list">
+            <!-- 这里只是为了显示列表项的结构 -->
+            <!-- 列表项在编辑时应该获得“编辑”类，在标记为完成时应该获得“完成”类 -->
+            <!-- 根据不同状态获取相应的样式，三种状态  -->
+            <li v-for="(item,index) in filterItems" :class="{completed:item.completed,editing:item===currentItem}">
+                <div class="view">
+                    <!-- v-model进行双向绑定，checkbox是否选中  -->
+                    <input class="toggle" type="checkbox" v-model="item.completed">
+                    <!-- 获取对应对象的内容  -->
+                    <label @dblclick="toEdit(item)">{{ item.content }}</label>
+                    <!-- 将id传入用于删除对应的数据  -->
+                    <button class="destroy" :value="item.id" @click="removeItem(index)"></button>
+                </div>
+                <!-- 显示点击编辑后的默认值:value="item.content"  -->
+                <input class="edit" @keyup.esc="cancelEdit"
+                       @keyup.enter="saveData(item,index,$event)"
+                       @blur="saveData(item,index,$event)"
+                       v-todo-focus="item===currentItem"
+                       :value="item.content">
+            </li>
+
+        </ul>
+    </section>
+    <!-- 这个页脚在默认情况下应该隐藏，当有待办事项时显示 -->
+
+    <!-- v-show="items.length"根据是否存在数据判断是否显示输入框下面的部分  -->
+    <footer class="footer" v-show="items.length">
+        <!-- 默认情况下，这应该是“0项剩余” -->
+        <!-- 返回所有未完成任务的数量，并且如果为单数就为item,否则为items -->
+        <span class="todo-count"><strong>{{ incomplete }}</strong> item{{ incomplete===1? '' : 's' }} left</span>
+        <!-- Remove this if you don't implement routing -->
+        <ul class="filters">
+            <li>
+                <a :class="{selected:filterState === 'all'}" href="#/">All</a>
+            </li>
+            <li>
+                <a :class="{selected:filterState === 'active'}" href="#/active">Active</a>
+            </li>
+            <li>
+                <a :class="{selected:filterState === 'completed'}" href="#/completed">Completed</a>
+            </li>
+        </ul>
+        <!-- 如果没有剩下完成的项目，则隐藏 -->
+        <button @click="removeAllCompleted" class="clear-completed" v-show="items.length > incomplete">Clear completed
+        </button>
+    </footer>
+</section>
+
+<footer class="info" v-show="items.length">
+    <p>Double-click to edit a todo</p>
+    <p>Template by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
+    <p>Created by <a href="http://todomvc.com">you</a></p>
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+</footer>
+
+</body>
+</html>
