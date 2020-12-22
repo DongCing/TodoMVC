@@ -1,5 +1,11 @@
 项目介绍:
 
+https://vuejs.org/v2/guide/
+
+https://vuejs.org/v2/examples/todomvc.html
+
+使用 Vue.js + ES6 实现 Vue 官网 TodoMVC 示例
+
 一个输入框,它实现的功能有:
 
 1.按回车,下面自动添加多数据;
