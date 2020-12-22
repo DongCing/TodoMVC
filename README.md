@@ -4,7 +4,7 @@ https://vuejs.org/v2/guide/
 
 https://vuejs.org/v2/examples/todomvc.html
 
-使用 Vue.js + ES6 实现 Vue 官网 TodoMVC 示例
+使用 Django + Vue.js + ES6 实现 Vue 官网 TodoMVC 示例
 
 一个输入框,它实现的功能有:
 
